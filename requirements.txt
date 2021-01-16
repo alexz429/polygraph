@@ -1,4 +1,3 @@
-pip==20.3.3
 allennlp==1.3.0
 allennlp-models==1.3.0
 aniso8601==8.1.0
