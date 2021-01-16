@@ -14,7 +14,7 @@ click==7.1.2
 colorama==0.4.4
 conllu==4.2.1
 cymem==2.0.5
-spacy==2.3.5
+spacy
 en-core-web-sm==2.2.5
 filelock==3.0.12
 Flask==1.1.2
