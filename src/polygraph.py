@@ -13,11 +13,18 @@ class Polygraph:
         self.hypothesis_tester = TextualEntailment()
 
     def run(self, captions: str) -> str:  # Both input and output strings must be valid JSON
-        captions = json.loads(captions)
+        # captions = json.loads(captions)
         assertion_scores = self.assertion_finder.parse_captions(captions)
         print(assertion_scores)
-        assertions = sorted(assertion_scores.items(), key=lambda x: x[1], reverse=True)[:self.top_n]
-        assertions = {k: {"score": v, "claim": captions[k]} for k, v in assertions}
+        assertions = sorted(assertion_scores.items(), key=lambda x: x[1]["claim_score"], reverse=True)[:self.top_n]
+        assertions = \
+            {
+                k: {
+                    "score": v,
+                    "claim": v["claim"],
+                    "claim_score": v["claim_score"]
+                } for (k, v) in assertions
+            }
 
         for timestamp, assertion in assertions.items():
             assertion["wolfram_response"] = self.wolfram_api.query(assertion)
@@ -30,8 +37,6 @@ class Polygraph:
 
 if __name__ == "__main__":
     p = Polygraph()
-    with open(str(ROOT_PATH / "data/sample.txt")) as file:
-        print("".join(file.readlines()))
-        p.run("".join(file.readlines()))
+    with open(str(ROOT_PATH / "data/sample.json")) as file:
+        p.run(json.load(file))
         file.close()
-

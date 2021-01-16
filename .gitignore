@@ -2,3 +2,4 @@
 /venv
 /stanfordnlp_resources
 **.pyc
+settings.yaml
