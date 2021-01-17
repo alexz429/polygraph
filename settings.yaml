@@ -1,2 +1,5 @@
 assertion_finder:
   api_key: "cc902698402e4b94bf933cd426dd5a35"
+fact_checker:
+  api_key: "AIzaSyA9eNn6jShml0ZFTvyXKDmkHsJieVp63BQ"
+

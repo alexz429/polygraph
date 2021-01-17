@@ -1,7 +1,7 @@
 # from src.definitions import ROOT_PATH
 from src.assertion_finder import AssertionFinder
 from src.textual_entailment import TextualEntailment
-from src.wolfram import WolframAPI
+from src.fact_checker import FactChecker
 import json
 
 from flask import Flask, request, jsonify
@@ -10,7 +10,7 @@ class Polygraph:
     def __init__(self, top_n=10):
         self.top_n = top_n
         self.assertion_finder = AssertionFinder()
-        self.wolfram_api = WolframAPI()
+        self.fact_checker = FactChecker()
         self.hypothesis_tester = TextualEntailment()
 
     def run(self, captions: dict) -> dict:  # Both input and output must be dicts
