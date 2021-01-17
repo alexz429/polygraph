@@ -28,11 +28,15 @@ class Polygraph:
             }
 
         for timestamp, assertion in assertions.items():
-            assertion["wolfram_response"] = self.wolfram_api.query(assertion)
-            assertion["is_factual"] = self.hypothesis_tester.run(assertion["wolfram_response"],
-                                                                 assertion["claim"])
+            assertion["original_claim"] = None
+            assertion["textualRating"] = None
+            assertion["title"] = None
+            assertion["url"] = None
+            assertion["is_factual"] = self.hypothesis_tester.run(assertion["title"],
+                                                                 assertion["original_claim"])
 
         invalid_assertions = {k: v for k, v in assertions if not assertions["is_factual"]}
+        # sort by key here
         return invalid_assertions
 
 
