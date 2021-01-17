@@ -1,9 +1,9 @@
 assertion_finder:
-  api_key: "cc902698402e4b94bf933cd426dd5a35"
+  api_key: "<Message James>"
 fact_checker:
-  api_key: "AIzaSyA9eNn6jShml0ZFTvyXKDmkHsJieVp63BQ"
+  api_key: "<Message James>"
 idea_extractor:
-  api_key: "31bd7f457a6947068125235c2f55b51b"
+  api_key: "<Message James>"
 
 polygraph:
   entailment_threshold: 0.5
