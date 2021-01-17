@@ -53,7 +53,7 @@ def hello_word():
 @app.route('/analyze', methods=["POST"])
 def get_polygraph():
     input_json = request.get_json(force=True)
-    result = p.run(input_json)
+    #result = p.run(input_json)
     # result = input_json
     return jsonify(result)
     
