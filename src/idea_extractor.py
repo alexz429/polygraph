@@ -37,3 +37,4 @@ class IdeaExtractor:
         out_dict = dict()
         for idea in resp_dict["documents"]:
             out_dict[idea["id"]] = idea["keyPhrases"]
+        return out_dict

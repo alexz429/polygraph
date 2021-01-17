@@ -1,11 +1,11 @@
-from src.definitions import ROOT_PATH
+from src.definitions import ROOT_PATH, SETTINGS
 from src.assertion_finder import AssertionFinder
 from src.textual_entailment import TextualEntailment
 from src.fact_checker import FactChecker
 from src.idea_extractor import IdeaExtractor
 import json
 
-from flask import Flask, request, jsonify
+from flask import Flask, request
 
 
 class Polygraph:
@@ -30,28 +30,37 @@ class Polygraph:
                 } for (k, v) in assertions
             }
 
-        out_assertions = dict()
-
         claims = {k: x["claim"] for k, x in assertions.items()}
         ideas = self.idea_extractor.get_ideas(claims)
         for key, idea in ideas.items():
-            assertions["ideas"] = ideas[key]
+            assertions[key]["ideas"] = ideas[key]
 
-
+        out_assertions = dict()
         for timestamp, assertion in assertions.items():
-            # shortened_assertion = get_idea(assertion["claim"])
-            articles = self.fact_checker.get_debunked_articles(None)
+            articles = [self.fact_checker.get_debunked_articles(idea) for idea in assertion["ideas"]]
+            # Flatten 2d array
+            articles = [article for idea_articles in articles for article in idea_articles]
 
-            assertion["original_claim"] = None
-            assertion["textualRating"] = None
-            assertion["title"] = None
-            assertion["url"] = None
-            assertion["is_factual"] = self.hypothesis_tester.run(assertion["title"],
-                                                                 assertion["original_claim"])
+            max_e = (0, 0, 0)
+            closest_article = None
+            for article in articles:
+                e, c, n = self.hypothesis_tester.calculate_entailment(assertion["claim"], article["text"])
+                if e > max_e[0]:
+                    max_e = (e, c, n)
+                    closest_article = article
 
-        invalid_assertions = {k: v for k, v in assertions if not assertions["is_factual"]}
-        # sort by key here
-        return invalid_assertions
+            # if max_e[0] < SETTINGS["polygraph"]["entailment_threshold"]:
+            #     continue
+
+            out_assertions[timestamp] = {
+                "original_claim": assertion["claim"],
+                "textual_rating": closest_article["claimReview"][0]["textualRating"],
+                "title": closest_article["text"],
+                "url": closest_article["claimReview"][0]["url"],
+                "confidence": max_e[0]
+            }
+
+        return out_assertions
 
 
 if __name__ == "__main__":

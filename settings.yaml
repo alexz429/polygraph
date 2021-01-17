@@ -4,3 +4,6 @@ fact_checker:
   api_key: "AIzaSyA9eNn6jShml0ZFTvyXKDmkHsJieVp63BQ"
 idea_extractor:
   api_key: "31bd7f457a6947068125235c2f55b51b"
+
+polygraph:
+  entailment_threshold: 0.5

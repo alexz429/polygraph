@@ -12,7 +12,3 @@ class TextualEntailment:
         results = self.predictor.predict(hypothesis, premise).get('probs')
         e, c, n = results[0], results[1], results[2]
         return e, c, n
-
-
-    def filter_similar(self, claim, articles):
-        pass
