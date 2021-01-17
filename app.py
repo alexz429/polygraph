@@ -5,11 +5,11 @@ from src.fact_checker import FactChecker
 from src.idea_extractor import IdeaExtractor
 import json
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 
 class Polygraph:
-    def __init__(self, top_n=10):
+    def __init__(self, top_n=5):
         self.top_n = top_n
         self.assertion_finder = AssertionFinder()
         self.fact_checker = FactChecker()
@@ -37,7 +37,8 @@ class Polygraph:
 
         out_assertions = dict()
         for timestamp, assertion in assertions.items():
-            articles = [self.fact_checker.get_debunked_articles(idea) for idea in assertion["ideas"]]
+            print(timestamp)
+            articles = [self.fact_checker.get_debunked_articles(idea) for idea in assertion["ideas"][:4]]
             # Flatten 2d array
             articles = [article for idea_articles in articles for article in idea_articles]
 
@@ -49,8 +50,16 @@ class Polygraph:
                     max_e = (e, c, n)
                     closest_article = article
 
-            # if max_e[0] < SETTINGS["polygraph"]["entailment_threshold"]:
-            #     continue
+            if closest_article is None:
+                continue
+
+            print(closest_article)
+
+            print(max_e)
+            print("\n\n\n")
+
+            if max_e[0] < SETTINGS["polygraph"]["entailment_threshold"]:
+                continue
 
             out_assertions[timestamp] = {
                 "original_claim": assertion["claim"],
@@ -62,14 +71,15 @@ class Polygraph:
 
         return out_assertions
 
-
 if __name__ == "__main__":
     p = Polygraph()
     with open(str(ROOT_PATH / "data/sample.json")) as file:
         p.run(json.load(file))
         file.close()
 
+
 app = Flask(__name__)
+print("Flask App Initialized")
 p = Polygraph()
 
 
@@ -81,6 +91,6 @@ def hello_word():
 @app.route('/analyze', methods=["POST"])
 def get_polygraph():
     input_json = request.get_json(force=True)
-    # result = p.run(input_json)
-    # result = input_json
-    # return jsonify(result)
+    result = p.run(input_json)
+    print(result)
+    return jsonify(result)
