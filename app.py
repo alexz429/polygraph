@@ -38,7 +38,7 @@ class Polygraph:
         out_assertions = dict()
         for timestamp, assertion in assertions.items():
             print(timestamp)
-            articles = [self.fact_checker.get_debunked_articles(idea) for idea in assertion["ideas"][:4]]
+            articles = [self.fact_checker.get_debunked_articles(idea) for idea in assertion["ideas"][:2]]
             # Flatten 2d array
             articles = [article for idea_articles in articles for article in idea_articles]
 
