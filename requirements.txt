@@ -14,8 +14,7 @@ click==7.1.2
 colorama==0.4.4
 conllu==4.2.1
 cymem==2.0.5
-spacy==2.3.5
-https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.5/en_core_web_sm-2.2.5.tar.gz#egg=en_core_web_sm
+en-core-web-sm==2.2.5
 filelock==3.0.12
 Flask==1.1.2
 Flask-RESTful==0.3.8
@@ -52,10 +51,11 @@ regex==2020.11.13
 requests==2.25.1
 s3transfer==0.3.4
 sacremoses==0.0.43
-scikit-learn==0.20.3
+scikit-learn==0.24.0
 scipy==1.6.0
 sentencepiece==0.1.95
 six==1.15.0
+spacy==2.3.5
 srsly==1.0.5
 stanfordnlp==0.2.0
 tensorboardX==2.1
@@ -73,4 +73,3 @@ wcwidth==0.2.5
 Werkzeug==1.0.1
 word2number==1.1
 zipp==3.4.0
-wheel
